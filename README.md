@@ -1,6 +1,8 @@
 # geosR
 R Package for Geosciences
 
-#How To Install
+# How To Install
 
-``` devtools::install_github("ghoziankarami/geosR")```
+```R
+devtools::install_github("ghoziankarami/geosR")
+```
