@@ -6,6 +6,12 @@
 \usage{
 no_outlier(df, col)
 }
+\arguments{
+\item{Removing}{Outlier from Dataframe}
+}
+\value{
+Dataframe
+}
 \description{
 this function using the IQR method for calculating outliers removal
 }
