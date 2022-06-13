@@ -5,10 +5,11 @@
 #' @return Dataframe
 #' @export
 #'
-no_outlier <- function(df, col){
-  Q1 <- stats::quantile(df$col, .25)
-  Q3 <- stats::quantile(df$col, .75)
-  IQR <- stats::IQR(df$col)
-  no_out <- subset(df, df$col > (Q1 - 1.5*IQR) & df$col < (Q3 + 1.5*IQR))
+no_outlier <- function(num) {
+  Q1 <- stats::quantile(num, .25)
+  Q3 <- stats::quantile(num, .75)
+  IQR <- stats::IQR(num)
+  x <- as.data.frame(num)
+  no_out <- subset(x, num > (Q1 - 1.5*IQR) & num < (Q3 + 1.5*IQR))
   return(no_out)
 }

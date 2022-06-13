@@ -4,7 +4,7 @@
 \alias{no_outlier}
 \title{Removing Outliers Function}
 \usage{
-no_outlier(df, col)
+no_outlier(num)
 }
 \arguments{
 \item{Removing}{Outlier from Dataframe}
