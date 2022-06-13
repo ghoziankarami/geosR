@@ -1,25 +1,23 @@
 #' Back Transform Function frm Gaussian distribution back to Normal ,
 #' written by Ashton Shortridge, May/June, 2008
 #'
-#' @param Back transformation
-#' @return Dataframe
+#' @param scores Gaussian Raster Data
+#' @param nscore Gaussian Numeric value
+#' @param tails Extrapolation options on tail value
+#' @return 'none' No extrapolation; more extreme score values will revert
+#' to the original min and max values.
+#' @return 'equal' Calculate magnitude in std deviations of the scores about
+#' initial data mean. Extrapolation is linear to these deviations.
+#' will be based upon deviations from the mean of the original:
+#' @return 'separate  This calculates a separate sd for values
+#' above and below the mean.
+
 #' @export
 #'
 
 backtr <- function(scores, nscore, tails='none', draw=TRUE) {
   # Given a vector of normal scores and a normal score object
   # (from nscore), the function returns a vector of back-transformed
-  # values. One major issue is how to extrapolate to the tails. Options
-  # other than none may result in dramatically incorrect tail estimates!
-  # tails options:
-  # 'none' : No extrapolation; more extreme score values will revert
-  # to the original min and max values.
-  # 'equal' : Calculate magnitude in std deviations of the scores about
-  # initial data mean. Extrapolation is linear to these deviations.
-  # will be based upon deviations from the mean of the original
-  # hard data - possibly quite dangerous!
-  # 'separate' :  This calculates a separate sd for values
-  # above and below the mean.
 
   if(tails=='separate') {
     mean.x <- mean(nscore$trn.table$x)

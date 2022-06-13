@@ -7,10 +7,7 @@
 no_outlier(num)
 }
 \arguments{
-\item{Removing}{Outlier from Dataframe}
-}
-\value{
-Dataframe
+\item{num}{Numeric}
 }
 \description{
 this function using the IQR method for calculating outliers removal

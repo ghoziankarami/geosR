@@ -1,8 +1,7 @@
 #' Removing Outliers Function
 #'
 #' this function using the IQR method for calculating outliers removal
-#' @param Removing Outlier from Dataframe
-#' @return Dataframe
+#' @param num Numeric
 #' @export
 #'
 no_outlier <- function(num) {

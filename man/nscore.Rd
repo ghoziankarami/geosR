@@ -7,10 +7,7 @@
 nscore(x)
 }
 \arguments{
-\item{Gaussian}{Transformation}
-}
-\value{
-Gaussian Transformation
+\item{x}{Numeric}
 }
 \description{
 Gaussian Transformation, written by Ashton Shortridge, May/June, 2008

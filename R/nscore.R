@@ -1,7 +1,6 @@
 #' Gaussian Transformation, written by Ashton Shortridge, May/June, 2008
 #'
-#' @param Gaussian Transformation
-#' @return Gaussian Transformation
+#' @param x Numeric
 #' @export
 #'
 

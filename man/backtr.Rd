@@ -8,10 +8,22 @@ written by Ashton Shortridge, May/June, 2008}
 backtr(scores, nscore, tails = "none", draw = TRUE)
 }
 \arguments{
-\item{Back}{transformation}
+\item{scores}{Gaussian Raster Data}
+
+\item{nscore}{Gaussian Numeric value}
+
+\item{tails}{Extrapolation options on tail value}
 }
 \value{
-Dataframe
+'none' No extrapolation; more extreme score values will revert
+to the original min and max values.
+
+'equal' Calculate magnitude in std deviations of the scores about
+initial data mean. Extrapolation is linear to these deviations.
+will be based upon deviations from the mean of the original:
+
+'separate  This calculates a separate sd for values
+above and below the mean.
 }
 \description{
 Back Transform Function frm Gaussian distribution back to Normal ,
