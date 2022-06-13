@@ -1,7 +1,10 @@
 #' Removing Outliers Function
 #'
 #' this function using the IQR method for calculating outliers removal
-
+#' @param Removing Outlier from Dataframe
+#' @return Dataframe
+#' @export
+#'
 no_outlier <- function(df, col){
   Q1 <- data.table::quantile(df$col, .25)
   Q3 <- data.table::quantile(df$col, .75)
