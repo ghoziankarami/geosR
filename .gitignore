@@ -2,3 +2,4 @@
 *.Rproj
 *.RData
 
+.Rbuildignore
