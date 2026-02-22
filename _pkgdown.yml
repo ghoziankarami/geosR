@@ -1,0 +1,18 @@
+reference:
+  - title: "Resource Calculation & Evaluation"
+    desc: "Core tools for computing block volumes, applying density parameters, evaluating recovery factors against realization, and plotting resource maps."
+    contents:
+      - calc_res
+      - ev_rest
+      - plot_res
+  - title: "Geostatistical Spatial Modeling"
+    desc: "Wrappers around gstat to streamline generating experimental variograms, fitting spherical models, and executing Ordinary Kriging."
+    contents:
+      - fit_var
+      - est_krige
+  - title: "Statistical Extrapolation & Transformation"
+    desc: "Data preparation helpers for transforming gaussian data, cleaning outliers, and calculating normal scores."
+    contents:
+      - backtr
+      - no_outlier
+      - nscore

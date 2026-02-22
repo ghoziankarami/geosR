@@ -1,12 +1,3 @@
-#' Geostatistical Spatial Modeling
-#'
-#' These functions act as wrappers around `gstat` to streamline the process of 
-#' generating experimental variograms, fitting spherical models, and executing 
-#' Ordinary Kriging block models across an area.
-#' @name geostats
-#' @title Geostatistical Spatial Modeling
-NULL
-
 #' Fit a Variogram Model
 #'
 #' This function automates fitting a variogram model to a dataset given parameters,
@@ -25,7 +16,6 @@ NULL
 #' @return A list containing the experimental directional variogram (`variogram`), 
 #' the fitted variogram model (`model`), and the initial model parameters (`initial_model`).
 #' @importFrom gstat variogram vgm fit.variogram
-#' @rdname geostats
 #' @export
 fit_var <- function(data, formula, cutoff = 250, width = 50, model_type = "Sph", sill = 0.02, range = 150, anisotropy = c(45, 0.5), tol_hor = 22.5) {
   # Define the initial variogram model
@@ -55,7 +45,6 @@ fit_var <- function(data, formula, cutoff = 250, width = 50, model_type = "Sph",
 #'
 #' @return An sf object containing the kriged predictions (`var1.pred`) and variances (`var1.var`).
 #' @importFrom gstat krige
-#' @rdname geostats
 #' @export
 est_krige <- function(data, formula, grid, vgm_model, maxdist = 300, nmin = 3, omax = 1) {
   kriged <- gstat::krige(formula, data, grid, model = vgm_model, maxdist = maxdist, nmin = nmin, omax = omax)

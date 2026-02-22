@@ -17,3 +17,5 @@ geosR.Rcheck/
 .vscode/
 .idea/
 .Rbuildignore
+/doc/
+/Meta/
