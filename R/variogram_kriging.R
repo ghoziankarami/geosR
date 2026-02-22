@@ -1,3 +1,12 @@
+#' Geostatistical Spatial Modeling
+#'
+#' These functions act as wrappers around `gstat` to streamline the process of 
+#' generating experimental variograms, fitting spherical models, and executing 
+#' Ordinary Kriging block models across an area.
+#' @name geostats
+#' @title Geostatistical Spatial Modeling
+NULL
+
 #' Fit a Variogram Model
 #'
 #' This function automates fitting a variogram model to a dataset given parameters,

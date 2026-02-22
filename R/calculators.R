@@ -1,3 +1,12 @@
+#' Resource Calculation & Evaluation
+#'
+#' These functions provide the core tools for computing block volumes, applying density 
+#' parameters for tonnages, evaluating recovery factors against realization, and 
+#' plotting the resulting resource maps.
+#' @name calculators
+#' @title Resource Calculation & Evaluation
+NULL
+
 #' Calculate Resources
 #'
 #' Calculates the volume, grade, and metal content (tonnage) for a resource block. 
@@ -118,6 +127,15 @@ plot_res <- function(tonnage_raster, area, title = "Resource Estimation", subtit
   
   return(pmap)
 }
+#' Statistical Extrapolation & Transformation
+#'
+#' These functions are data preparation helpers. They include tools for back-transforming 
+#' gaussian data safely to positive spaces, cleaning outliers via IQR, and calculating 
+#' normal scores.
+#' @name estimators
+#' @title Statistical Extrapolation & Transformation
+NULL
+
 #' Back Transform Function from Gaussian distribution back to Normal
 #' 
 #' Originally written by Ashton Shortridge, May/June, 2008
