@@ -121,7 +121,7 @@ deposit.</p>
 <span></span>
 <span><span class="co"># 4. Clean outliers (Best Practice: Remove spurious data before modeling)</span></span>
 <span><span class="co"># We use geosR's built-in outlier removal on the raw vectors</span></span>
-<span><span class="va">cln_grade</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimators.html">no_outlier</a></span><span class="op">(</span><span class="va">drill_data</span><span class="op">$</span><span class="va">grade</span><span class="op">)</span></span>
+<span><span class="va">cln_grade</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/no_outlier.html">no_outlier</a></span><span class="op">(</span><span class="va">drill_data</span><span class="op">$</span><span class="va">grade</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Visualize the raw drillhole grade distribution</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">drill_data</span><span class="op">)</span> <span class="op">+</span></span>
@@ -139,7 +139,7 @@ We model the spatial continuity of the <code>grade</code> variable.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fit a spherical variogram model</span></span>
 <span><span class="co"># Note: In practice, parameters like 'cutoff' and 'sill' are iteratively refined via EDA.</span></span>
-<span><span class="va">var_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geostats.html">fit_var</a></span><span class="op">(</span></span>
+<span><span class="va">var_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_var.html">fit_var</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">drill_data</span>, </span>
 <span>  formula <span class="op">=</span> <span class="va">grade</span> <span class="op">~</span> <span class="fl">1</span>, </span>
 <span>  cutoff <span class="op">=</span> <span class="fl">600</span>, </span>
@@ -163,7 +163,7 @@ predict attributes into un-sampled locations.</p>
 <span><span class="va">calc_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_make_grid.html" class="external-link">st_make_grid</a></span><span class="op">(</span><span class="va">area</span>, cellsize <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Kriging for Grade</span></span>
-<span><span class="va">kriged_grade</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geostats.html">est_krige</a></span><span class="op">(</span></span>
+<span><span class="va">kriged_grade</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_krige.html">est_krige</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">drill_data</span>, </span>
 <span>  formula <span class="op">=</span> <span class="va">grade</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>  grid <span class="op">=</span> <span class="va">calc_grid</span>, </span>
@@ -174,7 +174,7 @@ predict attributes into un-sampled locations.</p>
 <span><span class="co">#&gt; [using ordinary kriging]</span></span>
 <span></span>
 <span><span class="co"># Kriging for Thickness (using same spatial model for simplicity)</span></span>
-<span><span class="va">kriged_thick</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/geostats.html">est_krige</a></span><span class="op">(</span></span>
+<span><span class="va">kriged_thick</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/est_krige.html">est_krige</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">drill_data</span>, </span>
 <span>  formula <span class="op">=</span> <span class="va">thickness</span> <span class="op">~</span> <span class="fl">1</span>,</span>
 <span>  grid <span class="op">=</span> <span class="va">calc_grid</span>, </span>
@@ -201,7 +201,7 @@ predict attributes into un-sampled locations.</p>
 <span><span class="va">thick_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="fu"><a href="https://r-spatial.github.io/stars/reference/st_rasterize.html" class="external-link">st_rasterize</a></span><span class="op">(</span><span class="va">kriged_thick</span><span class="op">[</span><span class="st">"var1.pred"</span><span class="op">]</span><span class="op">)</span>, <span class="st">"SpatRaster"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Execute core resource calculation</span></span>
-<span><span class="va">my_resources</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculators.html">calc_res</a></span><span class="op">(</span></span>
+<span><span class="va">my_resources</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_res.html">calc_res</a></span><span class="op">(</span></span>
 <span>  raster_grade <span class="op">=</span> <span class="va">grade_raster</span>, </span>
 <span>  raster_thickness <span class="op">=</span> <span class="va">thick_raster</span>, </span>
 <span>  area <span class="op">=</span> <span class="va">area</span>, </span>
@@ -245,7 +245,7 @@ modeled resources against actual mining recovery to build confidence
 factors.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Assume the plant reported 15,000 tonnes of metal content recovered from this block</span></span>
-<span><span class="va">eval_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calculators.html">ev_rest</a></span><span class="op">(</span><span class="va">my_resources</span><span class="op">$</span><span class="va">table</span>, actual_production <span class="op">=</span> <span class="fl">15000</span><span class="op">)</span></span>
+<span><span class="va">eval_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ev_rest.html">ev_rest</a></span><span class="op">(</span><span class="va">my_resources</span><span class="op">$</span><span class="va">table</span>, actual_production <span class="op">=</span> <span class="fl">15000</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Display the reconciliation factor</span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">eval_table</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"metal_content"</span>, <span class="st">"actual_production"</span>, <span class="st">"recovery_factor"</span><span class="op">)</span><span class="op">]</span>, </span>
@@ -274,7 +274,7 @@ the block model.</em></p>
 management reporting.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate map utilizing tmap architecture</span></span>
-<span><span class="fu"><a href="../reference/calculators.html">plot_res</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/plot_res.html">plot_res</a></span><span class="op">(</span></span>
 <span>  tonnage_raster <span class="op">=</span> <span class="va">my_resources</span><span class="op">$</span><span class="va">raster</span>, </span>
 <span>  area <span class="op">=</span> <span class="va">area</span>, </span>
 <span>  title <span class="op">=</span> <span class="st">"Estimated Metal Content Distribution"</span>,</span>

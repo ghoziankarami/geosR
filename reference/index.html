@@ -48,21 +48,49 @@
     </div>
 
     <table class="ref-index"><colgroup><col class="alias"><col class="title"></colgroup><tbody><tr><th colspan="2">
-          <h2 id="all-functions">All functions <a href="#all-functions" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p>
+          <h2 id="resource-calculation-evaluation">Resource Calculation &amp; Evaluation <a href="#resource-calculation-evaluation" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Core tools for computing block volumes, applying density parameters, evaluating recovery factors against realization, and plotting resource maps.</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="calculators.html">calc_res()</a></code> <code><a href="calculators.html">ev_rest()</a></code> <code><a href="calculators.html">plot_res()</a></code> </p>
+          <p><code><a href="calc_res.html">calc_res()</a></code> </p>
         </td>
-        <td><p>Resource Calculation &amp; Evaluation</p></td>
+        <td><p>Calculate Resources</p></td>
       </tr><tr><td>
-          <p><code><a href="estimators.html">backtr()</a></code> <code><a href="estimators.html">no_outlier()</a></code> <code><a href="estimators.html">nscore()</a></code> </p>
+          <p><code><a href="ev_rest.html">ev_rest()</a></code> </p>
         </td>
-        <td><p>Statistical Extrapolation &amp; Transformation</p></td>
+        <td><p>Evaluate Resource Reconciliation</p></td>
       </tr><tr><td>
-          <p><code><a href="geostats.html">fit_var()</a></code> <code><a href="geostats.html">est_krige()</a></code> </p>
+          <p><code><a href="plot_res.html">plot_res()</a></code> </p>
         </td>
-        <td><p>Geostatistical Spatial Modeling</p></td>
+        <td><p>Plot Resource Map</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="geostatistical-spatial-modeling">Geostatistical Spatial Modeling <a href="#geostatistical-spatial-modeling" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Wrappers around gstat to streamline generating experimental variograms, fitting spherical models, and executing Ordinary Kriging.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="fit_var.html">fit_var()</a></code> </p>
+        </td>
+        <td><p>Fit a Variogram Model</p></td>
+      </tr><tr><td>
+          <p><code><a href="est_krige.html">est_krige()</a></code> </p>
+        </td>
+        <td><p>Estimate Ordinary Kriging</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="statistical-extrapolation-transformation">Statistical Extrapolation &amp; Transformation <a href="#statistical-extrapolation-transformation" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Data preparation helpers for transforming gaussian data, cleaning outliers, and calculating normal scores.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="backtr.html">backtr()</a></code> </p>
+        </td>
+        <td><p>Back Transform Function from Gaussian distribution back to Normal</p></td>
+      </tr><tr><td>
+          <p><code><a href="no_outlier.html">no_outlier()</a></code> </p>
+        </td>
+        <td><p>Remove Outliers using IQR Method</p></td>
+      </tr><tr><td>
+          <p><code><a href="nscore.html">nscore()</a></code> </p>
+        </td>
+        <td><p>Gaussian Transformation (Normal Score)</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

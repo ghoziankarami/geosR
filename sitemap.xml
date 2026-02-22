@@ -4,9 +4,14 @@
 <url><loc>/articles/index.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
-<url><loc>/reference/calculators.html</loc></url>
-<url><loc>/reference/estimators.html</loc></url>
-<url><loc>/reference/geostats.html</loc></url>
+<url><loc>/reference/backtr.html</loc></url>
+<url><loc>/reference/calc_res.html</loc></url>
+<url><loc>/reference/est_krige.html</loc></url>
+<url><loc>/reference/ev_rest.html</loc></url>
+<url><loc>/reference/fit_var.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/no_outlier.html</loc></url>
+<url><loc>/reference/nscore.html</loc></url>
+<url><loc>/reference/plot_res.html</loc></url>
 </urlset>
 
