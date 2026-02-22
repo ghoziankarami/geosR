@@ -10,95 +10,159 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7, 
+  fig.height = 5
 )
 ```
 
 # Introduction
 
-The `geosR` package provides a generalized geostatistical workflow to calculate spatial resources (volume, metal/content tonnage, and average grades). It simplifies the typical `gstat` + `sf` pipeline utilized by spatial geologists.
+The `geosR` package provides a generalized geostatistical workflow to calculate spatial resources (volume, metal/content tonnage, and average grades). This vignette demonstrates a complete, end-to-end evaluation using generated synthetic data, reflecting best practices for a Senior Geoscientist.
 
-There are 5 core functions:
-1. `fit_var()`: Fit a variogram model to spatial drillhole data.
-2. `est_krige()`: Run an ordinary kriging block model prediction.
-3. `calc_res()`: Intersect block model results with an area of interest polygon to compute volume, grades, and tonnage.
-4. `ev_rest()`: Perform resource reconciliation by comparing calculated totals against actual production realization.
-5. `plot_res()`: Visually plot the spatial resource distributions across your blocks.
-
-```{r setup}
+```{r setup, message=FALSE, warning=FALSE}
 library(geosR)
 library(sf)
 library(terra)
+library(stars)
+library(ggplot2)
 ```
 
-## Basic Workflow Example
+## 1. Exploratory Data Analysis (EDA) & Synthetic Data Generation
 
-Below is a theoretical workflow implementing these functions.
+In a real-world scenario, you would import drillhole data via `st_read` or `st_as_sf`. Here, we synthesize a realistic spatial distribution representing a nickel laterite deposit.
 
-### 1. Load Data
-Assume you have loaded a spatial `sf` object `drill_data` and an `area` boundary polygon.
+```{r synthetic_data}
+set.seed(42)
 
-```R
-# drill_data <- st_as_sf(df, coords=c("X","Y"), crs=32748)
+# 1. Generate a generic project boundary (Area of Interest)
+bbox <- st_bbox(c(xmin=0, xmax=1000, ymin=0, ymax=1000), crs=32748)
+area <- st_as_sf(st_as_sfc(bbox))
+area$ID <- "Block_A"
+
+# 2. Generate random drillhole points across the area
+pts <- st_sample(area, size = 150, type = "random")
+drill_data <- st_as_sf(pts)
+
+# 3. Simulate geological variables (Grade and Thickness)
+# We use a spatial trend (higher grades in the NE) + random noise
+coords <- st_coordinates(drill_data)
+trend <- (coords[,1] + coords[,2]) / 2000
+
+drill_data$grade <- rnorm(150, mean = 1.5 + trend, sd = 0.3)
+drill_data$thickness <- rnorm(150, mean = 5 + (trend * 5), sd = 1.5)
+
+# 4. Clean outliers (Best Practice: Remove spurious data before modeling)
+# We use geosR's built-in outlier removal on the raw vectors
+cln_grade <- no_outlier(drill_data$grade)
+
+# Visualize the raw drillhole grade distribution
+ggplot(drill_data) +
+  geom_sf(aes(color = grade), size = 3) +
+  scale_color_viridis_c(option = "plasma") +
+  theme_minimal() +
+  labs(title = "Synthetic Drillhole Data (Ni % Grade)")
 ```
 
-### 2. Variogram Modeling
-Fit a spherical model to your spatial grade data:
-```R
+## 2. Variogram Modeling
+
+A rigorous geostatistical estimate requires a well-fitted variogram. We model the spatial continuity of the `grade` variable.
+
+```{r variogram}
+# Fit a spherical variogram model
+# Note: In practice, parameters like 'cutoff' and 'sill' are iteratively refined via EDA.
 var_model <- fit_var(
   data = drill_data, 
   formula = grade ~ 1, 
-  cutoff = 250, 
+  cutoff = 600, 
   width = 50, 
   model_type = "Sph",
-  sill = 0.02, 
-  range = 150
+  sill = var(drill_data$grade) * 0.8, # Best practice: estimate sill from sample variance
+  range = 300
 )
 
-# Plot the model
-plot(var_model$variogram, var_model$model, main="Spherical Model")
+# Plot the experimental variogram and the fitted model
+plot(var_model$variogram, var_model$model, main="Spherical Variogram Model: Grade")
 ```
 
-### 3. Ordinary Kriging
-Generate a calculation grid, and predict the variable utilizing the fitted model.
-```R
-calc_grid <- st_make_grid(st_bbox(area), cellsize = 20)
+## 3. Ordinary Kriging (Block Modeling)
 
+With our variogram established, we generate a block model grid and predict attributes into un-sampled locations.
+
+```{r kriging, message=FALSE, warning=FALSE}
+# Initialize a 25x25m block model grid
+calc_grid <- st_make_grid(area, cellsize = 25)
+
+# Kriging for Grade
 kriged_grade <- est_krige(
   data = drill_data, 
   formula = grade ~ 1,
   grid = calc_grid, 
-  vgm_model = var_model$model
+  vgm_model = var_model$model,
+  maxdist = 400, # Limit search radius
+  nmin = 3       # Require at least 3 drillholes for an estimate
 )
+
+# Kriging for Thickness (using same spatial model for simplicity)
+kriged_thick <- est_krige(
+  data = drill_data, 
+  formula = thickness ~ 1,
+  grid = calc_grid, 
+  vgm_model = var_model$model,
+  maxdist = 400,
+  nmin = 3
+)
+
+# Visualize the kriged Grade predictions
+grade_raster <- as(st_rasterize(kriged_grade["var1.pred"]), "SpatRaster")
+plot(grade_raster, main = "Kriged Block Model (Grade %)")
+plot(st_geometry(area), add=TRUE, border="red", lwd=2)
 ```
 
-### 4. Calculate Resources
-Compute your overall volume and tonnage inside an area parameter.
-```R
-# Convert kriged points to rasters for both grade and thickness
-raster_grade <- as(st_rasterize(kriged_grade["var1.pred"]), "SpatRaster")
-raster_thick <- as(st_rasterize(kriged_thick["var1.pred"]), "SpatRaster")
+## 4. Resource Calculation
 
-# Density determines your resulting tonnage unit (assuming grade is raw % or kg/m3)
-my_resources <- calc_res(raster_grade, raster_thick, area, density = 1.0)
+We calculate the total metric tonnage contained within our boundary (`area`). We apply a specific gravity (density) of `1.6` for this material type (typical for laterite).
 
-# Check calculated figures per Area Polygon
-print(my_resources$table)
+```{r calc_resources}
+# Convert the sf predictions directly to terra SpatRasters for map algebra
+thick_raster <- as(st_rasterize(kriged_thick["var1.pred"]), "SpatRaster")
+
+# Execute core resource calculation
+my_resources <- calc_res(
+  raster_grade = grade_raster, 
+  raster_thickness = thick_raster, 
+  area = area, 
+  density = 1.6
+)
+
+# Review the tabular output (Polygon by Polygon)
+knitr::kable(my_resources$table, digits = 2, format.args = list(big.mark = ","))
 ```
 
-### 5. Evaluate Realization
-Determine a recovery factor by contrasting with actual plant performance.
-```R
-final_table <- ev_rest(my_resources$table, actual_production = 83000)
-print(final_table)
-```
+## 5. Evaluation and Reconciliation 
 
-### 6. Plot the Estimate
-Generate standard plots to add to reports.
-```R
+A senior geologist's job doesn't end at estimation. We must evaluate modeled resources against actual mining recovery to build confidence factors.
+
+```{r realization}
+# Assume the plant reported 15,000 tonnes of metal content recovered from this block
+eval_table <- ev_rest(my_resources$table, actual_production = 15000)
+
+# Display the reconciliation factor
+knitr::kable(eval_table[, c("ID", "metal_content", "actual_production", "recovery_factor")], 
+             digits = 3, format.args = list(big.mark = ","))
+```
+*Note: A recovery factor of < 1.0 indicates over-estimation by the block model.*
+
+## 6. Spatial Reporting (Plots)
+
+Finally, we generate standardized, presentation-ready maps for management reporting.
+
+```{r plot_maps}
+# Generate map utilizing tmap architecture
 plot_res(
   tonnage_raster = my_resources$raster, 
   area = area, 
-  title = "Resource Estimate Block A"
+  title = "Estimated Metal Content Distribution",
+  subtitle = "Block A"
 )
 ```

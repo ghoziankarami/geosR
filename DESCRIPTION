@@ -24,6 +24,9 @@ Imports:
     RColorBrewer,
     pkgdown
 Suggests: 
+    ggplot2,
     knitr,
-    rmarkdown
+    rmarkdown,
+    stars,
+    viridis
 VignetteBuilder: knitr
