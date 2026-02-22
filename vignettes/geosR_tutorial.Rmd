@@ -1,0 +1,104 @@
+---
+title: "geosR Tutorial: Resource Estimation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geosR_tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+The `geosR` package provides a generalized geostatistical workflow to calculate spatial resources (volume, metal/content tonnage, and average grades). It simplifies the typical `gstat` + `sf` pipeline utilized by spatial geologists.
+
+There are 5 core functions:
+1. `fit_var()`: Fit a variogram model to spatial drillhole data.
+2. `est_krige()`: Run an ordinary kriging block model prediction.
+3. `calc_res()`: Intersect block model results with an area of interest polygon to compute volume, grades, and tonnage.
+4. `ev_rest()`: Perform resource reconciliation by comparing calculated totals against actual production realization.
+5. `plot_res()`: Visually plot the spatial resource distributions across your blocks.
+
+```{r setup}
+library(geosR)
+library(sf)
+library(terra)
+```
+
+## Basic Workflow Example
+
+Below is a theoretical workflow implementing these functions.
+
+### 1. Load Data
+Assume you have loaded a spatial `sf` object `drill_data` and an `area` boundary polygon.
+
+```R
+# drill_data <- st_as_sf(df, coords=c("X","Y"), crs=32748)
+```
+
+### 2. Variogram Modeling
+Fit a spherical model to your spatial grade data:
+```R
+var_model <- fit_var(
+  data = drill_data, 
+  formula = grade ~ 1, 
+  cutoff = 250, 
+  width = 50, 
+  model_type = "Sph",
+  sill = 0.02, 
+  range = 150
+)
+
+# Plot the model
+plot(var_model$variogram, var_model$model, main="Spherical Model")
+```
+
+### 3. Ordinary Kriging
+Generate a calculation grid, and predict the variable utilizing the fitted model.
+```R
+calc_grid <- st_make_grid(st_bbox(area), cellsize = 20)
+
+kriged_grade <- est_krige(
+  data = drill_data, 
+  formula = grade ~ 1,
+  grid = calc_grid, 
+  vgm_model = var_model$model
+)
+```
+
+### 4. Calculate Resources
+Compute your overall volume and tonnage inside an area parameter.
+```R
+# Convert kriged points to rasters for both grade and thickness
+raster_grade <- as(st_rasterize(kriged_grade["var1.pred"]), "SpatRaster")
+raster_thick <- as(st_rasterize(kriged_thick["var1.pred"]), "SpatRaster")
+
+# Density determines your resulting tonnage unit (assuming grade is raw % or kg/m3)
+my_resources <- calc_res(raster_grade, raster_thick, area, density = 1.0)
+
+# Check calculated figures per Area Polygon
+print(my_resources$table)
+```
+
+### 5. Evaluate Realization
+Determine a recovery factor by contrasting with actual plant performance.
+```R
+final_table <- ev_rest(my_resources$table, actual_production = 83000)
+print(final_table)
+```
+
+### 6. Plot the Estimate
+Generate standard plots to add to reports.
+```R
+plot_res(
+  tonnage_raster = my_resources$raster, 
+  area = area, 
+  title = "Resource Estimate Block A"
+)
+```

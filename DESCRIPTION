@@ -9,4 +9,20 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0.9000
+RoxygenNote: 7.3.3
+Imports: 
+    sf,
+    terra,
+    gstat,
+    tmap,
+    dplyr,
+    tidyr,
+    gridExtra,
+    writexl,
+    units,
+    sp,
+    RColorBrewer
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
