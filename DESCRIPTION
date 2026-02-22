@@ -21,7 +21,8 @@ Imports:
     writexl,
     units,
     sp,
-    RColorBrewer
+    RColorBrewer,
+    pkgdown
 Suggests: 
     knitr,
     rmarkdown
