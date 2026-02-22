@@ -2,6 +2,7 @@
 % Please edit documentation in R/variogram_kriging.R
 \name{fit_var}
 \alias{fit_var}
+\alias{est_krige}
 \title{Fit a Variogram Model}
 \usage{
 fit_var(
@@ -15,9 +16,11 @@ fit_var(
   anisotropy = c(45, 0.5),
   tol_hor = 22.5
 )
+
+est_krige(data, formula, grid, vgm_model, maxdist = 300, nmin = 3, omax = 1)
 }
 \arguments{
-\item{data}{An sf object containing the drillhole or sampling data.}
+\item{data}{An sf object containing the drillhole data.}
 
 \item{formula}{A formula specifying the variable to model (e.g., grade ~ 1).}
 
@@ -34,12 +37,27 @@ fit_var(
 \item{anisotropy}{Numeric vector of length 2 representing the direction and anisotropy ratio.}
 
 \item{tol_hor}{Numeric, horizontal tolerance angle (default: 22.5).}
+
+\item{grid}{An sf grid object over which to predict. Can be created using sf::st_make_grid().}
+
+\item{vgm_model}{The fitted variogram model (typically the \code{model} output from \code{fit_var()}).}
+
+\item{maxdist}{Numeric, maximum distance to look for data points.}
+
+\item{nmin}{Numeric, minimum number of data points for an estimate.}
+
+\item{omax}{Numeric, maximum number of data points per octant.}
 }
 \value{
 A list containing the experimental directional variogram (\code{variogram}),
 the fitted variogram model (\code{model}), and the initial model parameters (\code{initial_model}).
+
+An sf object containing the kriged predictions (\code{var1.pred}) and variances (\code{var1.var}).
 }
 \description{
 This function automates fitting a variogram model to a dataset given parameters,
 suitable for various commodities and geological variables (e.g., grade, thickness).
+
+Wraps around gstat::krige() to generate a kriging output over a specified
+sf grid bounds. This handles the spatial conversions automatically.
 }

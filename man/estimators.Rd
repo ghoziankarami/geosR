@@ -2,9 +2,15 @@
 % Please edit documentation in R/calculators.R
 \name{backtr}
 \alias{backtr}
+\alias{no_outlier}
+\alias{nscore}
 \title{Back Transform Function from Gaussian distribution back to Normal}
 \usage{
 backtr(scores, nscore, tails = "none", draw = TRUE)
+
+no_outlier(num)
+
+nscore(x)
 }
 \arguments{
 \item{scores}{Numeric vector of normal scores to be back-transformed.}
@@ -19,10 +25,25 @@ backtr(scores, nscore, tails = "none", draw = TRUE)
 }}
 
 \item{draw}{Logical; if TRUE, generates a plot of the transform function.}
+
+\item{num}{Numeric vector to be cleaned.}
+
+\item{x}{Numeric vector to transform.}
 }
 \value{
 A numeric vector of the back-transformed original values.
+
+A numeric vector with the outliers removed.
+
+A list containing:
+\item{nscore}{The normalized score vector.}
+\item{trn.table}{A data frame mapping the sorted original \code{x} values to the sorted \code{nscore} values.}
 }
 \description{
 Originally written by Ashton Shortridge, May/June, 2008
+
+Cleans a numeric vector by removing extreme positive or negative outliers
+based on the Interquartile Range (IQR) method (Q1/Q3 +/- 1.5*IQR).
+
+Originally written by Ashton Shortridge, May/June, 2008.
 }

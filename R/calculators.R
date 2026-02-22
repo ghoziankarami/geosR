@@ -13,6 +13,7 @@
 #' and a `table` summarizing the area, expected volume, average grade, and total metal content per polygon.
 #' @importFrom terra extract xres
 #' @importFrom dplyr group_by summarise left_join mutate select n
+#' @rdname calculators
 #' @export
 calc_res <- function(raster_grade, raster_thickness, area, density = 1.0) {
   # Calculate dimensions of a single cell
@@ -58,6 +59,7 @@ calc_res <- function(raster_grade, raster_thickness, area, density = 1.0) {
 #'
 #' @return The original resource table with appended columns for actual_production and recovery_factor.
 #' @importFrom dplyr mutate
+#' @rdname calculators
 #' @export
 ev_rest <- function(res_table, actual_production) {
   estimated_production <- sum(res_table$metal_content, na.rm = TRUE)
@@ -85,6 +87,7 @@ ev_rest <- function(res_table, actual_production) {
 #' @importFrom tmap tm_shape tm_raster tm_borders tm_layout tm_grid tmap_mode tm_style
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom sf st_bbox
+#' @rdname calculators
 #' @export
 plot_res <- function(tonnage_raster, area, title = "Resource Estimation", subtitle = "", col_palette = "Spectral") {
   tmap::tmap_mode("plot")
@@ -131,6 +134,7 @@ plot_res <- function(tonnage_raster, area, title = "Resource Estimation", subtit
 #'
 #' @return A numeric vector of the back-transformed original values.
 #' @importFrom stats sd approxfun
+#' @rdname estimators
 #' @export
 backtr <- function(scores, nscore, tails='none', draw=TRUE) {
   
@@ -183,6 +187,7 @@ backtr <- function(scores, nscore, tails='none', draw=TRUE) {
 #'
 #' @return A numeric vector with the outliers removed.
 #' @importFrom stats quantile IQR
+#' @rdname estimators
 #' @export
 no_outlier <- function(num) {
   Q1 <- stats::quantile(num, 0.25, na.rm = TRUE)
@@ -205,6 +210,7 @@ no_outlier <- function(num) {
 #'   \item{nscore}{The normalized score vector.}
 #'   \item{trn.table}{A data frame mapping the sorted original `x` values to the sorted `nscore` values.}
 #' @importFrom stats qqnorm
+#' @rdname estimators
 #' @export
 nscore <- function(x) {
   nscore_val <- stats::qqnorm(x, plot.it = FALSE)$x
