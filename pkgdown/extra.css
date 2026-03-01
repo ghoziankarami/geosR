@@ -1,33 +1,119 @@
+/* Orebit Design System for pkgdown */
+:root {
+  --bg-main: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text-pure: #000000;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+  --accent-blue: #0ea5e9;
+  --accent-teal: #0d9488;
+}
+
+/* Base Body and Text */
+body {
+  background-color: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography & Headings */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--text-primary) !important;
+}
+
+/* Match Container Widths perfectly */
+@media (min-width: 1200px) {
+  .container.template-home, .container.template-article, .container.template-reference {
+    max-width: 1100px !important;
+  }
+}
+
+/* =========================================
+   Navbar Aesthetics (Glassmorphism & Spacing)
+   ========================================= */
 .navbar {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
-  background-color: rgba(255, 255, 255, 0.85) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color) !important;
   padding-top: 1.25rem !important;
   padding-bottom: 1.25rem !important;
 }
 
+/* Navbar Brand & Logo SVG injection */
 .navbar .navbar-brand {
   font-weight: 800 !important;
-  color: #0f172a !important;
   font-size: 1.25rem !important;
-}
-
-.navbar .nav-link {
-  font-weight: 500 !important;
-  color: #475569 !important;
-  font-size: 0.95rem !important;
-}
-
-.navbar .nav-link:hover {
-  color: #0f172a !important;
-}
-
-/* Specific styling for the Orebit Showcase badge linking */
-.navbar .nav-item:last-child a {
-  color: #0f172a !important;
+  color: var(--text-primary) !important;
   display: flex !important;
   align-items: center;
   gap: 0.5rem;
+}
+
+.navbar .navbar-brand::before {
+  content: "";
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='%230d9488' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E");
+  background-size: cover;
+}
+
+/* Navbar Links Strategy */
+.navbar .nav-link, .dropdown-menu .dropdown-item {
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  color: var(--text-secondary) !important;
+  transition: color 0.15s ease;
+}
+
+.navbar .nav-link:hover, .dropdown-menu .dropdown-item:hover {
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+}
+
+/* Specifically style the GitHub and external links */
+.navbar .nav-item:last-child a, .navbar-nav .nav-link.github {
+  color: var(--text-primary) !important;
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* =========================================
+   Page Content Overrides
+   ========================================= */
+.page-header {
+  border-bottom: 1px solid var(--border-color) !important;
+  margin-bottom: 2rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.page-header h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem) !important;
+  letter-spacing: -0.04em !important;
+}
+
+#main a {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: #cbd5e1;
+  text-underline-offset: 3px;
+}
+
+#main a:hover {
+  text-decoration-color: var(--text-primary);
+}
+
+pre, code {
+  color: #334155;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 6px !important;
 }
