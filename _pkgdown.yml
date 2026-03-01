@@ -16,7 +16,7 @@ navbar:
     right: [orebit, github]
   components:
     orebit:
-      text: "Orebit Showcase"
+      text: "Orebit Project"
       href: "https://showcase.orebit.id"
     github:
       icon: "fab fa-github"
