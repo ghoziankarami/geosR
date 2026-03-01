@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 /* Navbar Brand & Logo SVG injection */
 .navbar .navbar-brand {
   font-weight: 800 !important;
-  font-size: 1.25rem !important;
+  font-size: 1.4rem !important;
   color: var(--text-primary) !important;
   display: flex !important;
   align-items: center;
@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 /* Navbar Links Strategy */
 .navbar .nav-link, .dropdown-menu .dropdown-item {
   font-weight: 500 !important;
-  font-size: 0.95rem !important;
+  font-size: 1.05rem !important;
   color: var(--text-secondary) !important;
   transition: color 0.15s ease;
 }
