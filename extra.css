@@ -4,16 +4,20 @@
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid #e2e8f0;
+  padding-top: 1.25rem !important;
+  padding-bottom: 1.25rem !important;
 }
 
 .navbar .navbar-brand {
   font-weight: 800 !important;
   color: #0f172a !important;
+  font-size: 1.25rem !important;
 }
 
 .navbar .nav-link {
   font-weight: 500 !important;
   color: #475569 !important;
+  font-size: 0.95rem !important;
 }
 
 .navbar .nav-link:hover {
