@@ -1,0 +1,29 @@
+.navbar {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.navbar .navbar-brand {
+  font-weight: 800 !important;
+  color: #0f172a !important;
+}
+
+.navbar .nav-link {
+  font-weight: 500 !important;
+  color: #475569 !important;
+}
+
+.navbar .nav-link:hover {
+  color: #0f172a !important;
+}
+
+/* Specific styling for the Orebit Showcase badge linking */
+.navbar .nav-item:last-child a {
+  color: #0f172a !important;
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+}
