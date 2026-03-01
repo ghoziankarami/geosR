@@ -1,3 +1,18 @@
+url: https://ghoziankarami.github.io/geosR/
+template:
+  bootstrap: 5
+  bootswatch: materia
+  bslib:
+    primary: "#1565C0"
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [github, orebit]
+  components:
+    orebit:
+      text: "Orebit Showcase"
+      href: "https://showcase.orebit.id"
+
 reference:
   - title: "Resource Calculation & Evaluation"
     desc: "Core tools for computing block volumes, applying density parameters, evaluating recovery factors against realization, and plotting resource maps."
