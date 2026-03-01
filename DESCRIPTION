@@ -5,6 +5,8 @@ Authors@R:
     person("Ghozian", "Karami", , "ghoziankarami@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: This package includes several functions that will be useful for geosciences problems.
+URL: https://github.com/ghoziankarami/geosR
+BugReports: https://github.com/ghoziankarami/geosR/issues
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8

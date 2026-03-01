@@ -1,17 +1,27 @@
 url: https://ghoziankarami.github.io/geosR/
 template:
   bootstrap: 5
-  bootswatch: materia
   bslib:
-    primary: "#1565C0"
+    bg: "#ffffff"
+    fg: "#0f172a"
+    primary: "#0f172a"
+    base_font: { google: "Inter" }
+    heading_font: { google: "Inter" }
+    code_font: { google: "JetBrains Mono" }
 navbar:
+  bg: white
+  type: light
   structure:
     left: [intro, reference, articles, news]
-    right: [github, orebit]
+    right: [orebit, github]
   components:
     orebit:
       text: "Orebit Showcase"
       href: "https://showcase.orebit.id"
+    github:
+      icon: "fab fa-github"
+      href: "https://github.com/ghoziankarami/geosR"
+      aria-label: "GitHub"
 
 reference:
   - title: "Resource Calculation & Evaluation"
