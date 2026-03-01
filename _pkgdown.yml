@@ -17,7 +17,7 @@ navbar:
   components:
     orebit:
       text: "Orebit Project"
-      href: "https://showcase.orebit.id"
+      href: "https://orebit.id"
     github:
       icon: "fab fa-github"
       href: "https://github.com/ghoziankarami/geosR"
