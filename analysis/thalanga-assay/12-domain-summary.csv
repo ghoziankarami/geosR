@@ -1,0 +1,13 @@
+Type,Domain,Samples,Pct_Total
+Grade,High-Grade,1039,11.1349
+Grade,Low-Grade,2099,22.4949
+Grade,Medium-Grade,2847,30.5112
+Grade,Unmineralized,1843,19.7514
+Grade,Very High-Grade,1503,16.1076
+Final,Domain_1_Cu_Core_HighGrade,224,2.4006
+Final,Domain_2_Cu_Core_MedGrade,62,0.6645
+Final,Domain_3_CuZn_Transition,1691,18.1224
+Final,Domain_4_ZnPb_Cap,2936,31.465
+Final,Domain_5_LowGrade_Peripheral,1666,17.8545
+Final,Domain_6_Unmineralized,1843,19.7514
+Final,Domain_7_Undefined,909,9.7417
