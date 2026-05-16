@@ -25,6 +25,7 @@ best-practice standard names.
 You can install the development version of geosR directly from GitHub:
 
 ``` r
+
 # Install devtools if you haven't already
 # install.packages("devtools")
 
@@ -44,6 +45,7 @@ You can also read the vignette directly inside your R session after
 installation:
 
 ``` r
+
 library(geosR)
 vignette("geosR_tutorial")
 ```

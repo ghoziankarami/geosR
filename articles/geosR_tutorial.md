@@ -9,6 +9,7 @@ using generated synthetic data, reflecting best practices for a Senior
 Geoscientist.
 
 ``` r
+
 library(geosR)
 library(sf)
 library(terra)
@@ -23,6 +24,7 @@ or `st_as_sf`. Here, we synthesize a realistic spatial distribution
 representing a nickel laterite deposit.
 
 ``` r
+
 set.seed(42)
 
 # 1. Generate a generic project boundary (Area of Interest)
@@ -62,6 +64,7 @@ A rigorous geostatistical estimate requires a well-fitted variogram. We
 model the spatial continuity of the `grade` variable.
 
 ``` r
+
 # Fit a spherical variogram model
 # Note: In practice, parameters like 'cutoff' and 'sill' are iteratively refined via EDA.
 var_model <- fit_var(
@@ -86,6 +89,7 @@ With our variogram established, we generate a block model grid and
 predict attributes into un-sampled locations.
 
 ``` r
+
 # Initialize a 25x25m block model grid
 calc_grid <- st_make_grid(area, cellsize = 25)
 
@@ -126,6 +130,7 @@ We calculate the total metric tonnage contained within our boundary
 material type (typical for laterite).
 
 ``` r
+
 # Convert the sf predictions directly to terra SpatRasters for map algebra
 thick_raster <- as(st_rasterize(kriged_thick["var1.pred"]), "SpatRaster")
 
@@ -152,6 +157,7 @@ modeled resources against actual mining recovery to build confidence
 factors.
 
 ``` r
+
 # Assume the plant reported 15,000 tonnes of metal content recovered from this block
 eval_table <- ev_rest(my_resources$table, actual_production = 15000)
 
@@ -173,6 +179,7 @@ Finally, we generate standardized, presentation-ready maps for
 management reporting.
 
 ``` r
+
 # Generate map utilizing tmap architecture
 plot_res(
   tonnage_raster = my_resources$raster, 
