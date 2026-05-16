@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/ghoziankarami/geosR/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/ghoziankarami/geosR/blob/main/DESCRIPTION)
 
 Karami G (2026). *geosR: The R Package for Geosciences Problems*. R
 package version 0.0.0.9000, <https://github.com/ghoziankarami/geosR>.
