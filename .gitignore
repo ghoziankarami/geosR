@@ -16,6 +16,5 @@ geosR.Rcheck/
 .snakemake/
 .vscode/
 .idea/
-.Rbuildignore
 /doc/
 /Meta/

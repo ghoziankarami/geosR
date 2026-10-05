@@ -1,14 +1,14 @@
 Package: geosR
-Title: The R Package for Geosciences Problems
+Title: Geostatistical and Spatial Helpers for Geoscience
 Version: 0.0.0.9000
 Authors@R: 
-    person("Ghozian", "Karami", , "ghoziankarami@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package includes several functions that will be useful for geosciences problems.
+    person("Ghozian", "Karami", , "ghoziankarami@gmail.com", role = c("aut", "cre"))
+Description: Helpers for variogram fitting, kriging, spatial resource
+    calculations, mapping, and distribution transformations using established
+    geospatial R packages. Outputs support analysis and preliminary screening.
 URL: https://github.com/ghoziankarami/geosR
 BugReports: https://github.com/ghoziankarami/geosR/issues
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3

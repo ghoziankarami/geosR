@@ -1,0 +1,7 @@
+^\.github$
+^analysis$
+^pkgdown$
+^_pkgdown\.yml$
+^README\.md$
+^CONTRIBUTING\.md$
+^SECURITY\.md$
