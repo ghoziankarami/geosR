@@ -3,18 +3,18 @@
 ## Authors
 
 - **Ghozian Karami**. Author, maintainer.
-  [](https://orcid.org/YOUR-ORCID-ID)
 
 ## Citation
 
 Source:
 [`DESCRIPTION`](https://github.com/ghoziankarami/geosR/blob/main/DESCRIPTION)
 
-Karami G (2026). *geosR: The R Package for Geosciences Problems*. R
-package version 0.0.0.9000, <https://github.com/ghoziankarami/geosR>.
+Karami G (2026). *geosR: Geostatistical and Spatial Helpers for
+Geoscience*. R package version 0.0.0.9000,
+<https://github.com/ghoziankarami/geosR>.
 
     @Manual{,
-      title = {geosR: The R Package for Geosciences Problems},
+      title = {geosR: Geostatistical and Spatial Helpers for Geoscience},
       author = {Ghozian Karami},
       year = {2026},
       note = {R package version 0.0.0.9000},

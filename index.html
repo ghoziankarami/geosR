@@ -5,17 +5,17 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>The R Package for Geosciences Problems • geosR</title>
+<title>Geostatistical and Spatial Helpers for Geoscience • geosR</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Inter-0.4.10/font.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/Inter-0.4.10/font.css" rel="stylesheet">
 <link href="deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<meta property="og:title" content="The R Package for Geosciences Problems">
-<meta name="description" content="This package includes several functions that will be useful for geosciences problems.">
-<meta property="og:description" content="This package includes several functions that will be useful for geosciences problems.">
+<meta property="og:title" content="Geostatistical and Spatial Helpers for Geoscience">
+<meta name="description" content="Helpers for variogram fitting, kriging, spatial resource calculations, mapping, and distribution transformations using established geospatial R packages. Outputs support analysis and preliminary screening.">
+<meta property="og:description" content="Helpers for variogram fitting, kriging, spatial resource calculations, mapping, and distribution transformations using established geospatial R packages. Outputs support analysis and preliminary screening.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -55,40 +55,102 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="geosr">geosR<a class="anchor" aria-label="anchor" href="#geosr"></a>
 </h1></div>
-<p><strong>geosR</strong> is an R package containing generalized functional wrappers for resource estimation, exploratory data analysis, and kriging. It simplifies the pipeline from drillhole points to evaluated resource tonnages by wrapping <code>gstat</code>, <code>sf</code>, and <code>terra</code> together under best-practice standard names.</p>
+<p>geosR is an R package with helpers for geostatistical analysis, spatial interpolation, and preliminary resource calculations. It wraps functions from <code>gstat</code>, <code>sf</code>, <code>terra</code>, and <code>tmap</code>.</p>
+<p>The package is in development (<code>0.0.0.9000</code>). Check units, coordinate systems, and calculation assumptions before using outputs in a study.</p>
 <div class="section level2">
-<h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+<h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
 </h2>
-<ul>
-<li>
-<strong>Spatial Modeling (<code>fit_var</code>, <code>est_krige</code>)</strong>: Easily fit variograms to your raw geoscientific point data and generate interpolated block models.</li>
-<li>
-<strong>Resource Evaluation (<code>calc_res</code>, <code>ev_rest</code>)</strong>: Spatially intersect block models with boundaries, calculate metric volume, configure density adjustments for arbitrary commodities, and evaluate reconciliation recovery factors.</li>
-<li>
-<strong>Mapping (<code>plot_res</code>)</strong>: Leverage built-in <code>tmap</code> configurations to generate presentation-ready spatial maps.</li>
-<li>
-<strong>Statistical Helpers (<code>backtr</code>, <code>nscore</code>, <code>no_outlier</code>)</strong>: Transform and analyze data distributions directly.</li>
-</ul>
-</div>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>You can install the development version of geosR directly from GitHub:</p>
+<p>Install R and the system libraries required by <code>sf</code> and <code>terra</code> on your platform (GDAL, GEOS, and PROJ where applicable). Then run:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install devtools if you haven't already</span></span>
-<span><span class="co"># install.packages("devtools")</span></span>
-<span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ghoziankarami/geosR"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ghoziankarami/geosR"</span>, build_vignettes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ghoziankarami/geosR" class="external-link">geosR</a></span><span class="op">)</span></span></code></pre></div>
+<p>Building vignettes is optional and also requires <code>knitr</code>, <code>rmarkdown</code>, and Pandoc. Use <code>build_vignettes = TRUE</code> once those tools are installed.</p>
 </div>
 <div class="section level2">
-<h2 id="documentation--tutorials">Documentation &amp; Tutorials<a class="anchor" aria-label="anchor" href="#documentation--tutorials"></a>
+<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
-<p>The core of this package is documented through interactive vignettes and function manuals.</p>
-<p>Since this package utilizes GitHub Actions for automated documentation, you can browse the <strong>interactive tutorial online:</strong> <a href="https://ghoziankarami.github.io/geosR/">👉 geosR GitHub Pages site</a></p>
-<p>You can also read the vignette directly inside your R session after installation:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr>
+<th>Functions</th>
+<th>Purpose</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>
+<code><a href="reference/fit_var.html">fit_var()</a></code>, <code><a href="reference/est_krige.html">est_krige()</a></code>
+</td>
+<td>Variogram fitting and kriging.</td>
+</tr>
+<tr>
+<td>
+<code><a href="reference/calc_res.html">calc_res()</a></code>, <code><a href="reference/ev_rest.html">ev_rest()</a></code>
+</td>
+<td>Resource calculations and recovery adjustments.</td>
+</tr>
+<tr>
+<td><code><a href="reference/plot_res.html">plot_res()</a></code></td>
+<td>Spatial maps using tmap.</td>
+</tr>
+<tr>
+<td>
+<code><a href="reference/nscore.html">nscore()</a></code>, <code><a href="reference/backtr.html">backtr()</a></code>, <code><a href="reference/no_outlier.html">no_outlier()</a></code>
+</td>
+<td>Distribution transformations and outlier handling.</td>
+</tr>
+</tbody>
+</table>
+<p>Consult each function’s help page for argument names and units:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ghoziankarami/geosR" class="external-link">geosR</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"geosR_tutorial"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span><span class="st">"fit_var"</span>, package <span class="op">=</span> <span class="st">"geosR"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/help.html" class="external-link">help</a></span><span class="op">(</span><span class="st">"calc_res"</span>, package <span class="op">=</span> <span class="st">"geosR"</span><span class="op">)</span></span></code></pre></div>
+<p><a href="https://ghoziankarami.github.io/geosR/">Tutorials and function reference</a> are published through pkgdown. The vignette source is in <code>vignettes/</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="repository">Repository<a class="anchor" aria-label="anchor" href="#repository"></a>
+</h2>
+<table class="table">
+<thead><tr>
+<th>Path</th>
+<th>Contents</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>R/</code></td>
+<td>Package functions.</td>
+</tr>
+<tr>
+<td><code>man/</code></td>
+<td>Function help files generated by roxygen2.</td>
+</tr>
+<tr>
+<td><code>vignettes/</code></td>
+<td>Tutorial sources.</td>
+</tr>
+<tr>
+<td><code>analysis/</code></td>
+<td>Worked analyses and supporting manuscripts.</td>
+</tr>
+<tr>
+<td><code>.github/workflows/</code></td>
+<td>Documentation build and contribution checks.</td>
+</tr>
+</tbody>
+</table>
+<p>For local package checks:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/ghoziankarami/geosR.git</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">R</span> CMD build geosR</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">R</span> CMD check <span class="at">--no-manual</span> geosR_0.0.0.9000.tar.gz</span></code></pre></div>
+<p>This package assists calculations; its outputs are not a certified resource or reserve statement. Independent geological and statistical review is required.</p>
+</div>
+<div class="section level2">
+<h2 id="contributing-and-license">Contributing and license<a class="anchor" aria-label="anchor" href="#contributing-and-license"></a>
+</h2>
+<p>Use <a href="https://github.com/ghoziankarami/geosR/issues" class="external-link">GitHub Issues</a> for reproducible bugs and <a href="CONTRIBUTING.html">CONTRIBUTING.md</a> for pull requests. The code is licensed under MIT; see <a href="LICENSE.html">LICENSE.md</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -102,10 +164,17 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>`use_mit_license()`, `use_gpl3_license()` or friends to pick a license</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
@@ -117,7 +186,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Ghozian Karami <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/YOUR-ORCID-ID" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Ghozian Karami <br><small class="roles"> Author, maintainer </small>   </li>
 </ul>
 </div>
 
@@ -132,7 +201,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

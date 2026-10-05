@@ -199,7 +199,7 @@ plot_res(
 #>   'tm_scale_intervals(<HERE>)'
 #> [v3->v4] `tm_raster()`: use `col_alpha` instead of `alpha`.
 #> [v3->v4] `tm_raster()`: migrate the argument(s) related to the legend of the
-#> visual variable `col` namely 'title' to 'col.legend = tm_legend(<HERE>)'
+#> map variable `col` namely 'title' to 'col.legend = tm_legend(<HERE>)'
 #> [v3->v4] `tm_layout()`: use `tm_title()` instead of `tm_layout(main.title = )`
 #> [plot mode] fit legend/component: Some legend items or map compoments do not
 #> fit well, and are therefore rescaled.
