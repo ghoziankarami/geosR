@@ -152,6 +152,12 @@
 </h2>
 <p>Use <a href="https://github.com/ghoziankarami/geosR/issues" class="external-link">GitHub Issues</a> for reproducible bugs and <a href="CONTRIBUTING.html">CONTRIBUTING.md</a> for pull requests. The code is licensed under MIT; see <a href="LICENSE.html">LICENSE.md</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="automated-package-checks">Automated package checks<a class="anchor" aria-label="anchor" href="#automated-package-checks"></a>
+</h2>
+<p>The <code>R CMD check</code> workflow installs the package and its dependencies, builds the vignette, and runs the package checks on Linux. Base-R tests in <code>tests/known-answers.R</code> cover normal scores, IQR filtering and reconciliation arithmetic using small deterministic inputs. The separate pkgdown workflow builds the documentation site; it does not replace package checks.</p>
+<p>To reproduce the package check locally, use the R CMD build/check commands above. Broader kriging, grid geometry, units and cross-platform validation remain additional work; passing these initial tests does not establish scientific validity for every workflow.</p>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>

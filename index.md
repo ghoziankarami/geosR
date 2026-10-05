@@ -72,3 +72,17 @@ reproducible bugs and
 [CONTRIBUTING.md](https://ghoziankarami.github.io/geosR/CONTRIBUTING.md)
 for pull requests. The code is licensed under MIT; see
 [LICENSE.md](https://ghoziankarami.github.io/geosR/LICENSE.md).
+
+## Automated package checks
+
+The `R CMD check` workflow installs the package and its dependencies,
+builds the vignette, and runs the package checks on Linux. Base-R tests
+in `tests/known-answers.R` cover normal scores, IQR filtering and
+reconciliation arithmetic using small deterministic inputs. The separate
+pkgdown workflow builds the documentation site; it does not replace
+package checks.
+
+To reproduce the package check locally, use the R CMD build/check
+commands above. Broader kriging, grid geometry, units and cross-platform
+validation remain additional work; passing these initial tests does not
+establish scientific validity for every workflow.
