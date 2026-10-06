@@ -27,6 +27,11 @@ calc_res <- function(raster_grade, raster_thickness, area, density = 1.0) {
       terra::nlyr(raster_grade) != 1L || terra::nlyr(raster_thickness) != 1L) {
     stop("grade and thickness must be single-layer SpatRasters")
   }
+  # compareGeom permits sub-cell offsets by default; aggregation needs aligned cells.
+  if (!isTRUE(all.equal(as.vector(terra::ext(raster_grade)),
+                        as.vector(terra::ext(raster_thickness)), tolerance = 1e-10))) {
+    stop("grade and thickness extent must align")
+  }
   terra::compareGeom(raster_grade, raster_thickness, stopOnError = TRUE)
   model_crs <- sf::st_crs(terra::crs(raster_grade))
   crs_units <- tolower(model_crs$units_gdal)
@@ -114,7 +119,7 @@ plot_res <- function(tonnage_raster, area, title = "Resource Estimation", subtit
   tmap::tmap_mode("plot")
   col_pal <- rev(RColorBrewer::brewer.pal(3, col_palette))
   
-  cell_area <- round(terra::xres(tonnage_raster)^2, 0)
+  cell_area <- round(prod(terra::res(tonnage_raster)), 0)
   legend_title <- paste("Content / cell (", cell_area, "m2)")
   
   pmap <- tmap::tm_shape(tonnage_raster, bbox = sf::st_bbox(area)) +
