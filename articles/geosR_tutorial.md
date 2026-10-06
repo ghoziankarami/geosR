@@ -146,9 +146,9 @@ my_resources <- calc_res(
 knitr::kable(my_resources$table, digits = 2, format.args = list(big.mark = ","))
 ```
 
-|  ID |   area_m2 | avg_thickness_m | expected_volume_m3 | avg_grade | metal_content |
-|----:|----------:|----------------:|-------------------:|----------:|--------------:|
-|   1 | 1,003,472 |            7.61 |          7,635,003 |      1.98 |    24,151,553 |
+|  ID | area_m2 | avg_thickness_m | expected_volume_m3 | avg_grade | metal_content |
+|----:|--------:|----------------:|-------------------:|----------:|--------------:|
+|   1 |   1e+06 |            7.61 |          7,609,475 |      1.99 |    24,272,211 |
 
 ### 5. Evaluation and Reconciliation
 
@@ -168,7 +168,7 @@ knitr::kable(eval_table[, c("ID", "metal_content", "actual_production", "recover
 
 |  ID | metal_content | actual_production | recovery_factor |
 |----:|--------------:|------------------:|----------------:|
-|   1 |    24,151,553 |            15,000 |           0.001 |
+|   1 |    24,272,211 |            15,000 |           0.001 |
 
 *Note: A recovery factor of \< 1.0 indicates over-estimation by the
 block model.*
