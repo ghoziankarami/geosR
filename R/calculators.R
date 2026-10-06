@@ -1,50 +1,75 @@
 #' Calculate Resources
 #'
-#' Calculates the volume, grade, and metal content (tonnage) for a resource block. 
-#' This calculation is generalized for any commodity, utilizing geometric volume 
-#' and grade block models.
+#' Calculates planar volume and grade content from aligned, single-layer rasters
+#' in a projected metre CRS. Polygon intersections weight each cell by its exact
+#' covered fraction; missing grade or thickness excludes the cell from all totals.
 #'
-#' @param raster_grade A SpatRaster containing the estimated grade values.
-#' @param raster_thickness A SpatRaster containing the estimated thickness values.
-#' @param area An sf polygon outlining the resource calculation boundary.
-#' @param density Numeric, the bulk density or specific gravity of the material (default = 1.0).
+#' @param raster_grade A single-layer SpatRaster of grade values.
+#' @param raster_thickness An aligned single-layer SpatRaster of thickness in metres.
+#' @param area An sf or sfc polygon boundary in the same projected metre CRS.
+#' @param density A positive finite conversion factor (default 1). For grade in
+#'   kg/m3 use 1; for mass-fraction grade and density in t/m3 the result is tonnes.
+#'   Convert percentages to fractions before using that second convention.
 #'
-#' @return A list containing the `raster` of calculated metal content (tonnage) 
-#' and a `table` summarizing the area, expected volume, average grade, and total metal content per polygon.
+#' @return A list containing the per-cell content raster and a polygon table.
+#'   Area is valid covered area in m2, volume is in m3, thickness is area-weighted,
+#'   grade is volume-weighted, and metal_content sums covered per-cell content.
+#'   Polygons without valid intersecting cells have zero totals and NA means.
+#' @details Cell area is x resolution times y resolution. Area is measured in
+#'   the map projection, not geodesic ground area; choose a suitable local CRS.
+#'   The caller must supply compatible grade and density units. The result is
+#'   preliminary numerical screening, not a reporting classification.
 #' @importFrom dplyr group_by summarise left_join mutate select n
 #' @export
 calc_res <- function(raster_grade, raster_thickness, area, density = 1.0) {
-  # Calculate dimensions of a single cell
-  cell_area <- terra::xres(raster_grade)^2
-  
-  # Calculate tonnage per cell = cell area * thickness * grade * density
-  # (assuming grade is in mass/volume e.g., kg/m3. Or adjust density parameter if volume grade is dimensionless).
+  if (!inherits(raster_grade, "SpatRaster") ||
+      !inherits(raster_thickness, "SpatRaster") ||
+      terra::nlyr(raster_grade) != 1L || terra::nlyr(raster_thickness) != 1L) {
+    stop("grade and thickness must be single-layer SpatRasters")
+  }
+  terra::compareGeom(raster_grade, raster_thickness, stopOnError = TRUE)
+  model_crs <- sf::st_crs(terra::crs(raster_grade))
+  crs_units <- tolower(model_crs$units_gdal)
+  if (is.na(model_crs) || terra::is.lonlat(raster_grade) || length(crs_units) != 1L ||
+      !crs_units %in% c("metre", "meter", "metres", "meters", "m")) {
+    stop("rasters require a projected CRS with metre units")
+  }
+  if (!inherits(area, c("sf", "sfc")) || is.na(sf::st_crs(area)) ||
+      sf::st_crs(area) != model_crs) {
+    stop("area must have the same projected metre CRS as the rasters")
+  }
+  if (!all(sf::st_geometry_type(area) %in% c("POLYGON", "MULTIPOLYGON"))) {
+    stop("area must contain polygon geometry")
+  }
+  if (length(density) != 1L || !is.numeric(density) || !is.finite(density) || density <= 0) {
+    stop("density must be a positive finite conversion factor")
+  }
+  cell_area <- prod(terra::res(raster_grade))
   tonnage_raster <- cell_area * raster_thickness * raster_grade * density
-  
-  # Calculate area per polygon
-  area_val <- terra::extract(tonnage_raster, area)
-  luasan_polygon <- area_val |>
-    dplyr::group_by(ID) |>
-    dplyr::summarise(area_m2 = dplyr::n() * cell_area)
-  
-  # Calculate average thickness per polygon
-  thickness_val <- terra::extract(raster_thickness, area, fun = mean, na.rm = TRUE)
-  thickness_polygon <- data.frame(ID = thickness_val[, 1], avg_thickness_m = thickness_val[, 2])
-  
-  # Calculate average grade per polygon
-  grade_val <- terra::extract(raster_grade, area, fun = mean, na.rm = TRUE)
-  grade_polygon <- data.frame(ID = grade_val[, 1], avg_grade = grade_val[, 2])
-  
-  # Join all summaries together
-  res_table <- dplyr::left_join(thickness_polygon, grade_polygon, by = "ID") |>
-    dplyr::left_join(luasan_polygon, by = "ID") |>
-    dplyr::mutate(
-      expected_volume_m3 = area_m2 * avg_thickness_m,
-      metal_content = expected_volume_m3 * avg_grade * density
-    ) |>
-    dplyr::select(ID, area_m2, avg_thickness_m, expected_volume_m3, avg_grade, metal_content)
-  
-  return(list(raster = tonnage_raster, table = res_table))
+  values <- c(raster_grade, raster_thickness)
+  names(values) <- c("grade", "thickness")
+  covered <- terra::extract(values, terra::vect(area), exact = TRUE)
+  valid <- is.finite(covered$grade) & is.finite(covered$thickness) &
+    is.finite(covered$fraction) & covered$fraction > 0
+  if (any(covered$thickness[valid] < 0)) stop("thickness must be non-negative")
+  covered <- covered[valid, , drop = FALSE]
+  summaries <- lapply(seq_len(length(sf::st_geometry(area))), function(id) {
+    rows <- covered[covered$ID == id, , drop = FALSE]
+    weights <- rows$fraction * cell_area
+    volume <- weights * rows$thickness
+    area_m2 <- sum(weights)
+    volume_m3 <- sum(volume)
+    content <- sum(volume * rows$grade) * density
+    data.frame(ID = id, area_m2 = area_m2,
+               avg_thickness_m = if (area_m2 > 0) volume_m3 / area_m2 else NA_real_,
+               expected_volume_m3 = volume_m3,
+               avg_grade = if (volume_m3 > 0) sum(volume * rows$grade) / volume_m3 else NA_real_,
+               metal_content = content)
+  })
+  res_table <- if (length(summaries)) do.call(rbind, summaries) else
+    data.frame(ID = integer(), area_m2 = numeric(), avg_thickness_m = numeric(),
+               expected_volume_m3 = numeric(), avg_grade = numeric(), metal_content = numeric())
+  list(raster = tonnage_raster, table = res_table)
 }
 
 #' Evaluate Resource Reconciliation
